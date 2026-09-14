@@ -1,0 +1,14 @@
+export type MovementType='PURCHASE'|'SALE'|'SALES_RETURN'|'CANCELLATION'|'DAMAGE'|'ADJUSTMENT'
+export type InvoiceStatus='POSTED'|'CANCELLED'
+export interface Product{id:string;name:string;hsnCode:string;unit:string;packSize:string;reorderLevel:number;active:boolean;createdAt:string}
+export interface ProductBatch{id:string;productId:string;batchNumber:string;manufacturingDate?:string;expiryDate?:string;costPrice:number;mrp:number;sellingPrice:number;gstRate:number;cgstRate:number;sgstRate:number;igstRate:number;currentQuantity:number;purchasedQuantity:number;createdAt:string}
+export interface Supplier{id:string;name:string;gstin?:string;phone?:string;address?:string;state?:string;stateCode?:string}
+export interface Customer{id:string;name:string;mobile?:string;address?:string;gstin?:string;state?:string;stateCode?:string}
+export interface PurchaseInvoice{id:string;invoiceNumber:string;invoiceDate:string;supplierId?:string;supplierName:string;supplierGstin?:string;deliveryNoteNumber?:string;buyerOrderNumber?:string;remarks?:string;taxableAmount:number;cgstAmount:number;sgstAmount:number;igstAmount:number;totalAmount:number;createdAt:string}
+export interface PurchaseItem{id:string;purchaseId:string;productId:string;batchId:string;quantity:number;costPrice:number;mrp:number;sellingPrice:number;gstRate:number;taxableAmount:number}
+export interface SalesInvoice{id:string;invoiceNumber:string;invoiceDate:string;customerId?:string;customerName:string;customerMobile?:string;customerGstin?:string;customerState?:string;customerStateCode?:string;paymentMode:string;status:InvoiceStatus;taxableAmount:number;cgstAmount:number;sgstAmount:number;igstAmount:number;discountAmount:number;totalAmount:number;createdAt:string}
+export interface SalesItem{id:string;salesInvoiceId:string;productId:string;batchId:string;quantity:number;mrp:number;sellingPrice:number;gstRate:number;taxableAmount:number}
+export interface SalesReturn{id:string;returnNumber:string;salesInvoiceId:string;returnDate:string;reason:string;totalAmount:number;createdAt:string}
+export interface SalesReturnItem{id:string;returnId:string;salesInvoiceId:string;productId:string;batchId:string;quantity:number;amount:number}
+export interface InventoryMovement{id:string;productId:string;batchId:string;type:MovementType;quantity:number;referenceId?:string;referenceNumber?:string;reason?:string;notes?:string;createdAt:string}
+export interface BusinessSettings{id:string;businessName:string;address:string;gstin:string;phone:string;state:string;stateCode:string;updatedAt:string}
