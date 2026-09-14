@@ -1,0 +1,7 @@
+import Dexie,{type Table} from 'dexie'
+import type {BusinessSettings,Customer,InventoryMovement,Product,ProductBatch,PurchaseInvoice,PurchaseItem,SalesInvoice,SalesItem,SalesReturn,SalesReturnItem,Supplier} from '../types'
+export class AppDB extends Dexie{
+ products!:Table<Product,string>;batches!:Table<ProductBatch,string>;suppliers!:Table<Supplier,string>;customers!:Table<Customer,string>;purchases!:Table<PurchaseInvoice,string>;purchaseItems!:Table<PurchaseItem,string>;sales!:Table<SalesInvoice,string>;salesItems!:Table<SalesItem,string>;returns!:Table<SalesReturn,string>;returnItems!:Table<SalesReturnItem,string>;movements!:Table<InventoryMovement,string>;settings!:Table<BusinessSettings,string>
+ constructor(){super('rythumithra-agri-erp');this.version(2).stores({products:'id,name,hsnCode,active',batches:'id,productId,batchNumber,expiryDate,[productId+batchNumber]',suppliers:'id,name,gstin',customers:'id,name,mobile,gstin',purchases:'id,invoiceNumber,invoiceDate,supplierName',purchaseItems:'id,purchaseId,productId,batchId',sales:'id,invoiceNumber,invoiceDate,status,customerName',salesItems:'id,salesInvoiceId,productId,batchId',returns:'id,returnNumber,salesInvoiceId,returnDate',returnItems:'id,returnId,salesInvoiceId,batchId',movements:'id,productId,batchId,type,createdAt,referenceId',settings:'id'}).upgrade(tx=>tx.table('batches').toCollection().modify((b:any)=>{b.cgstRate=b.cgstRate??(b.gstRate||0)/2;b.sgstRate=b.sgstRate??(b.gstRate||0)/2;b.igstRate=b.igstRate??(b.gstRate||0)}))}
+}
+export const db=new AppDB()
