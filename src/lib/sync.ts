@@ -17,7 +17,7 @@ import type {
 const snake = (key: string) => key.replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`)
 const camel = (key: string) => key.replace(/_([a-z])/g, (_, char: string) => char.toUpperCase())
 
-function encodeRow<T extends Record<string, unknown>>(row: T): Record<string, unknown> {
+function encodeRow<T extends object>(row: T): Record<string, unknown> {
   return Object.fromEntries(Object.entries(row).map(([key, value]) => [snake(key), value]))
 }
 
@@ -25,7 +25,7 @@ function decodeRow<T>(row: Record<string, unknown>): T {
   return Object.fromEntries(Object.entries(row).map(([key, value]) => [camel(key), value])) as T
 }
 
-async function push<T extends Record<string, unknown>>(table: string, rows: T[]) {
+async function push<T extends object>(table: string, rows: T[]) {
   if (!rows.length) return
   const { error } = await supabase!.from(table).upsert(rows.map(encodeRow), { onConflict: 'id' })
   if (error) throw error
